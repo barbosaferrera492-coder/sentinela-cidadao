@@ -21,7 +21,3 @@ Material informativo. Não é canal oficial de órgão público, banco ou políc
 ## Como rodar
 
 É um único arquivo `index.html`, sem build. Basta abrir no navegador ou publicar pelo GitHub Pages.
-
-## Arquivos antigos
-
-`worker.js`, `script.js`, `style.css` e `css/` pertencem à versão anterior (verificador e denúncias) e não são usados pelo site atual.
