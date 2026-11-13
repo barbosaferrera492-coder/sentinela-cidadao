@@ -1,11 +1,11 @@
 {
   "name": "Sentinela Cidadão - São Fidélis",
   "short_name": "Sentinela",
-  "description": "Proteção digital para os cidadãos de São Fidélis",
+  "description": "Orientação contra golpes para moradores de São Fidélis",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#001830",
-  "theme_color": "#00529B",
+  "background_color": "#F2F5F9",
+  "theme_color": "#0B4FA0",
   "orientation": "portrait",
   "icons": [
     {

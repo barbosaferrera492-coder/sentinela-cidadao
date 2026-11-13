@@ -1,129 +1,27 @@
-# 🛡️ Sentinela Cidadão
+# Sentinela Cidadão
 
-Sistema de verificação e denúncia de golpes digitais, criado para ajudar a proteger os cidadãos de **São Fidélis** contra fraudes online, sites falsos e golpes via Pix.
+Site gratuito de **orientação contra golpes** para os moradores de São Fidélis (RJ).
 
----
+## O que tem
 
-## 💡 Sobre o projeto
+- **Golpes**: catálogo com 18 golpes comuns, busca e filtros. Cada um mostra como acontece, os sinais e o que fazer.
+- **Teste**: perguntas sobre uma mensagem ou ligação estranha, com orientação sobre os sinais de alerta. Nunca garante que algo é seguro.
+- **Proteção**: checklist de 10 hábitos, guia para quem cuida de idosos e cartão de emergência (salvo só no aparelho).
+- **Já caí**: passo a passo para as primeiras horas (banco e MED do Pix, senhas, provas, boletim de ocorrência) e gerador de relato.
+- **Consulta**: canais oficiais, glossário, perguntas frequentes e fontes.
 
-O **Sentinela Cidadão** é uma aplicação web simples que permite:
+## Privacidade
 
-* 🔍 Verificar links e chaves Pix suspeitas
-* 📢 Denunciar possíveis golpes
-* 🤖 Receber uma análise baseada em palavras-chave suspeitas
-* 🔒 Garantir que denúncias só sejam aprovadas manualmente
+O site não coleta, envia nem armazena dados em servidores. O que a pessoa digita fica só no aparelho dela.
 
----
+## Aviso
 
-## 🚀 Funcionalidades
+Material informativo. Não é canal oficial de órgão público, banco ou polícia e não substitui orientação profissional. Confirme telefones e endereços nos sites oficiais antes de usar.
 
-### 🔍 Verificação de Segurança
+## Como rodar
 
-* Analisa textos, links e chaves Pix
-* Compara com uma lista negra (blacklist)
-* Retorna:
+É um único arquivo `index.html`, sem build. Basta abrir no navegador ou publicar pelo GitHub Pages.
 
-  * ✅ Seguro (não encontrado)
-  * ⚠️ Alerta
-  * ⛔ Perigo (golpe identificado)
+## Arquivos antigos
 
----
-
-### 📢 Sistema de Denúncia
-
-* Usuário pode denunciar:
-
-  * Sites falsos
-  * Golpes com Pix
-* As denúncias são:
-
-  * 📥 Salvas no Firebase
-  * ⏳ Marcadas como **PENDENTE**
-  * ❌ NÃO entram automaticamente na lista de bloqueio
-
----
-
-## 🧠 Como funciona
-
-O sistema utiliza:
-
-* Limpeza de texto (remoção de símbolos e URLs)
-* Comparação com palavras-chave suspeitas
-* Uma **lista oficial de golpes** mantida manualmente
-
----
-
-## 🔥 Tecnologias usadas
-
-* HTML5
-* CSS3
-* JavaScript
-* Firebase (Realtime Database)
-
----
-
-## 🗂️ Estrutura do Projeto
-
-```bash
-index.html   # Interface + lógica do sistema
-```
-
----
-
-## ⚙️ Configuração
-
-1. Crie um projeto no Firebase
-2. Ative o **Realtime Database**
-3. Substitua no código:
-
-```javascript
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "...",
-  projectId: "...",
-  ...
-};
-```
-
----
-
-## ⚠️ Segurança
-
-* Denúncias NÃO são aprovadas automaticamente
-* Apenas o administrador pode adicionar itens na blacklist
-* Evita bloqueios indevidos
-
----
-
-## 📍 Objetivo
-
-Criar uma ferramenta simples e acessível para:
-
-> 🛡️ **Proteger cidadãos contra golpes digitais no dia a dia**
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido por **Joel**
-📚 Estudante de Análise e Desenvolvimento de Sistemas
-
----
-
-## 📌 Status do Projeto
-
-🚧 Em desenvolvimento — melhorias futuras incluem:
-
-* Integração com IA real
-* Painel administrativo
-* Sistema de autenticação
-* API de verificação
-
----
-
-## 💙 Mensagem
-
-> “A tecnologia deve proteger as pessoas, não confundi-las.”
-
----
-
+`worker.js`, `script.js`, `style.css` e `css/` pertencem à versão anterior (verificador e denúncias) e não são usados pelo site atual.
