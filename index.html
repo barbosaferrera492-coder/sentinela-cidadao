@@ -1,627 +1,762 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentinela Cidadão - São Fidélis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --azul: #00529B;
-            --azul-escuro: #00264d;
-            --azul-profundo: #001830;
-            --dourado: #FFD700;
-            --dourado-suave: #FFC107;
-            --verde: #2ecc71;
-            --vermelho: #e74c3c;
-            --amarelo-alerta: #f39c12;
-            --branco: #ffffff;
-            --branco-suave: rgba(255,255,255,0.85);
-            --vidro: rgba(255,255,255,0.08);
-            --vidro-borda: rgba(255,255,255,0.15);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Orientação gratuita contra golpes para moradores de São Fidélis: golpes mais comuns, teste de alerta, hábitos de proteção e o que fazer se já caiu.">
+<meta name="theme-color" content="#0B4FA0">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Sentinela Cidadão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: coluna única de leitura (46rem), mobile primeiro, tamanho de letra grande para idosos.
+   Início com tese + três portas; páginas de consulta com linhas separadas por fios, sem cartões em excesso. */
+:root{
+  --bg:#F2F5F9;
+  --surface:#FFFFFF;
+  --surface-2:#E7EDF5;
+  --ink:#0C1B33;
+  --ink-2:#3B4A62;
+  --line:#D3DCE9;
+  --line-strong:#8FA0B8;
+  --blue:#0B4FA0;
+  --blue-btn:#0B4FA0;
+  --on-blue:#FFFFFF;
+  --hl:#FFD84D;
+  --hl-soft:#FFF4C7;
+  --danger:#B42318;
+  --danger-btn:#B42318;
+  --on-danger:#FFFFFF;
+  --danger-soft:#FDECEA;
+  --warn:#7A4E00;
+  --warn-soft:#FFF1D2;
+  --ok:#19633A;
+  --ok-soft:#E3F4EA;
+  --focus:#0B4FA0;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1424;--surface:#111F36;--surface-2:#182A47;--ink:#EAF0FA;--ink-2:#AAB9D0;
+    --line:#243857;--line-strong:#5E7799;--blue:#7DB1FF;--blue-btn:#7DB1FF;--on-blue:#08142A;
+    --hl:rgba(255,210,63,.34);--hl-soft:#2C2810;--danger:#FF9A90;--danger-btn:#FF9A90;--on-danger:#2A0A07;
+    --danger-soft:#3A1818;--warn:#FFCB66;--warn-soft:#38290C;--ok:#74DFA0;--ok-soft:#10301E;--focus:#7DB1FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1424;--surface:#111F36;--surface-2:#182A47;--ink:#EAF0FA;--ink-2:#AAB9D0;
+  --line:#243857;--line-strong:#5E7799;--blue:#7DB1FF;--blue-btn:#7DB1FF;--on-blue:#08142A;
+  --hl:rgba(255,210,63,.34);--hl-soft:#2C2810;--danger:#FF9A90;--danger-btn:#FF9A90;--on-danger:#2A0A07;
+  --danger-soft:#3A1818;--warn:#FFCB66;--warn-soft:#38290C;--ok:#74DFA0;--ok-soft:#10301E;--focus:#7DB1FF;
+  color-scheme:dark;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 18px/1.6 var(--f-body);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+a{color:var(--blue);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.shell{width:100%;max-width:46rem;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.view{padding-block:28px 8px}
+.scam,.block,.res,.faq{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 64px)}
 
-        body {
-            font-family: 'Barlow', sans-serif;
-            background: var(--azul-profundo);
-            min-height: 100vh;
-            padding: 20px 16px 40px;
-            color: var(--branco);
-            position: relative;
-            overflow-x: hidden;
-        }
+/* topo */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px 12px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;min-width:0}
+.brand svg{width:30px;height:34px;flex:none;color:var(--blue-btn)}
+.brand b{display:block;font:800 1.5rem/1 var(--f-display);letter-spacing:.05em;text-transform:uppercase}
+.brand small{display:block;font:600 .72rem/1.3 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.sos{flex:none;background:var(--danger-btn);color:var(--on-danger);text-decoration:none;font:700 1rem/1 var(--f-body);padding:13px 16px;border-radius:8px;min-height:44px;display:inline-flex;align-items:center}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}
+.tabs a{min-height:48px;display:grid;place-items:center;text-align:center;text-decoration:none;color:var(--ink-2);font:600 15px/1.1 var(--f-body);border-bottom:3px solid transparent;padding:0 2px}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--blue-btn);font-weight:700}
+@media (max-width:380px){.tabs a{font-size:13.5px}}
 
-        /* Fundo animado */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,82,155,0.5) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 80% at 80% 80%, rgba(0,38,77,0.8) 0%, transparent 60%);
-            z-index: 0;
-            pointer-events: none;
-        }
+/* tipografia */
+.eyebrow{font:700 .78rem/1.2 var(--f-body);letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin:0 0 12px}
+h1{font:800 clamp(2.5rem,10vw,3.9rem)/.98 var(--f-display);margin:0 0 18px;text-wrap:balance;letter-spacing:.005em}
+h2{font:700 1.85rem/1.08 var(--f-display);margin:0 0 10px;text-wrap:balance}
+h3{font:700 1.15rem/1.3 var(--f-body);margin:0 0 4px}
+h4{font:700 .78rem/1.2 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:18px 0 6px}
+p{margin:0 0 14px}
+.lead{font-size:1.2rem;line-height:1.55;color:var(--ink-2);max-width:36rem}
+.muted{color:var(--ink-2)}
+.small{font-size:.9rem}
+mark{background:linear-gradient(transparent 52%,var(--hl) 52%,var(--hl) 94%,transparent 94%);color:inherit;padding:0 .12em}
+.block{margin-top:44px}
 
-        /* Grade de pontos decorativa */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 28px 28px;
-            z-index: 0;
-            pointer-events: none;
-        }
+/* portas */
+.doors{display:grid;margin-top:26px;border-bottom:1px solid var(--line)}
+.door{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 16px;padding:18px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.door b{font:700 1.7rem/1.05 var(--f-display)}
+.door span{color:var(--ink-2);font-size:.98rem;grid-column:1}
+.door i{grid-column:2;grid-row:1/3;font-style:normal;font-size:1.7rem;color:var(--blue)}
+.door.red b,.door.red i{color:var(--danger)}
+.door:hover b{text-decoration:underline;text-underline-offset:4px}
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 580px;
-            margin: 0 auto;
-        }
+/* regra de ouro */
+.rule{background:var(--hl-soft);border-radius:10px;padding:22px 20px}
+.rule h2{margin-bottom:8px}
+.rule p{margin:0;font-size:1.1rem}
 
-        /* ── HEADER ── */
-        .header {
-            text-align: center;
-            padding: 36px 20px 28px;
-            margin-bottom: 6px;
-        }
+/* sinais */
+.signs{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0 32px}
+.signs li{padding:14px 0;border-top:1px solid var(--line)}
+.signs strong{display:block}
+.signs span{color:var(--ink-2);font-size:.97rem}
 
-        .logo-wrap {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--azul), var(--azul-escuro));
-            border-radius: 24px;
-            font-size: 40px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 32px rgba(0,82,155,0.6), 0 0 0 1px var(--vidro-borda);
-            animation: pulsar 3s ease-in-out infinite;
-        }
+/* formulários */
+.field{display:grid;gap:6px;margin-bottom:14px}
+label.l{font:600 .95rem/1.3 var(--f-body);color:var(--ink-2)}
+input[type=text],input[type=search],select,textarea{width:100%;min-width:0;padding:14px 16px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:8px;font:400 18px/1.4 var(--f-body)}
+textarea{min-height:120px;resize:vertical}
+input::placeholder,textarea::placeholder{color:var(--ink-2);opacity:.75}
+.searchrow{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:12px 20px;border:0;border-radius:8px;background:var(--blue-btn);color:var(--on-blue);font:700 1.05rem/1.2 var(--f-body);cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line-strong)}
+.btn.block-w{width:100%}
+.row-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:10px;margin-top:12px}
+@media (max-width:420px){.searchrow{grid-template-columns:1fr}}
 
-        @keyframes pulsar {
-            0%, 100% { box-shadow: 0 8px 32px rgba(0,82,155,0.6), 0 0 0 1px var(--vidro-borda); }
-            50% { box-shadow: 0 8px 48px rgba(0,82,155,0.9), 0 0 0 3px rgba(255,215,0,0.2); }
-        }
+/* catálogo */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.chip{min-height:44px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);font:600 .98rem/1 var(--f-body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--blue-btn);border-color:var(--blue-btn);color:var(--on-blue)}
+.count{font-size:.92rem;color:var(--ink-2);margin:10px 0 6px}
+.scam{border-top:1px solid var(--line)}
+.scam:last-child{border-bottom:1px solid var(--line)}
+.scam summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 0;min-height:56px}
+.scam summary::-webkit-details-marker{display:none}
+.scam summary::after{content:"+";font:700 1.7rem/1 var(--f-body);color:var(--blue);flex:none}
+.scam[open] summary::after{content:"\2212"}
+.nm{font:700 1.2rem/1.25 var(--f-body);min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tag{font:600 .72rem/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);border:1px solid var(--line-strong);border-radius:4px;padding:4px 6px}
+.sb{padding:0 0 20px}
+.sb ul{margin:0;padding-left:1.2rem;display:grid;gap:6px}
+.empty{padding:20px 0;color:var(--ink-2)}
 
-        h1 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 2.4em;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
+/* ferramentas */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.q{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line);cursor:pointer}
+.q:first-of-type{border-top:0}
+input[type=checkbox]{width:24px;height:24px;flex:none;margin:2px 0 0;accent-color:var(--blue-btn)}
+.res{margin-top:18px;padding:18px;border-radius:10px;border:1.5px solid}
+.res[hidden]{display:none}
+.res.high{background:var(--danger-soft);border-color:var(--danger)}
+.res.mid{background:var(--warn-soft);border-color:var(--warn)}
+.res.low{background:var(--surface-2);border-color:var(--line-strong)}
+.res h3{font:700 1.5rem/1.1 var(--f-display)}
+.res ul{margin:10px 0 0;padding-left:1.2rem;display:grid;gap:6px}
+.bar{height:12px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.check{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--line);cursor:pointer}
+.check span{min-width:0}
+.check small{display:block;color:var(--ink-2);font-size:.92rem}
+.done{background:var(--ok-soft);color:var(--ok);padding:12px 14px;border-radius:8px;font-weight:600;margin-top:12px}
 
-        .frase-cidade {
-            display: inline-block;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 0.9em;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--dourado);
-            background: rgba(255,215,0,0.08);
-            border: 1px solid rgba(255,215,0,0.25);
-            padding: 6px 16px;
-            border-radius: 20px;
-        }
+/* passos */
+.alert{background:var(--danger-soft);border:1.5px solid var(--danger);border-radius:10px;padding:16px 18px;margin:18px 0}
+.alert p{margin:0}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);width:36px;height:36px;border-radius:50%;background:var(--blue-btn);color:var(--on-blue);display:grid;place-items:center;font:700 1.3rem/1 var(--f-display)}
+.steps div{min-width:0}
+.steps p{margin:0 0 6px}
+.faq{border-top:1px solid var(--line)}
+.faq:last-of-type{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:14px 0;font-weight:700;min-height:52px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:700 1.5rem/1 var(--f-body);color:var(--blue);flex:none}
+.faq[open] summary::after{content:"\2212"}
+.faq div{padding:0 0 16px}
+.faq ul{margin:0;padding-left:1.2rem}
+pre.out{white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0 0;padding:14px;background:var(--surface-2);border-radius:8px;font:400 .95rem/1.5 var(--f-body)}
 
-        /* ── CARD PRINCIPAL ── */
-        .card {
-            background: var(--vidro);
-            border: 1px solid var(--vidro-borda);
-            border-radius: 20px;
-            padding: 24px;
-            backdrop-filter: blur(16px);
-            margin-bottom: 16px;
-        }
+/* consulta */
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.contact{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;padding:14px 0;border-top:1px solid var(--line)}
+.contact:last-of-type{border-bottom:1px solid var(--line)}
+.contact div{min-width:0;flex:1 1 14rem}
+.contact p{margin:0;color:var(--ink-2);font-size:.95rem}
+.contact strong.v{font:700 1.15rem/1.3 var(--f-body);overflow-wrap:anywhere;text-align:right;flex:0 1 auto}
+@media (max-width:480px){.contact strong.v{text-align:left}}
+dl{margin:10px 0 0}
+dt{font-weight:700;margin-top:14px}
+dd{margin:2px 0 0;color:var(--ink-2)}
+.srcs{padding-left:1.2rem;margin:8px 0 0}
 
-        /* ── CHAT IA ── */
-        .chat-ia {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
+/* rodapé */
+.foot{margin-top:56px;padding-block:24px 48px;border-top:1px solid var(--line);color:var(--ink-2);font-size:.9rem}
+.foot nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:12px}
+.foot p{margin:0 0 8px}
 
-        .robo {
-            font-size: 32px;
-            flex-shrink: 0;
-            animation: balanco 2s ease-in-out infinite;
-        }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
 
-        @keyframes balanco {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
-        .texto-ia {
-            background: rgba(0,82,155,0.3);
-            border: 1px solid rgba(0,82,155,0.5);
-            padding: 14px 16px;
-            border-radius: 4px 16px 16px 16px;
-            line-height: 1.6;
-            font-size: 0.95em;
-        }
-
-        .texto-ia strong {
-            color: var(--dourado);
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-        }
-
-        /* ── STATUS BADGE ── */
-        .badge-ativo {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(46,204,113,0.15);
-            border: 1px solid rgba(46,204,113,0.4);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.78em;
-            font-weight: 600;
-            color: #2ecc71;
-            margin-top: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-ativo::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            background: #2ecc71;
-            border-radius: 50%;
-            animation: piscar 1.5s ease-in-out infinite;
-        }
-
-        @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-
-        /* ── ABAS ── */
-        .abas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .aba {
-            padding: 13px;
-            text-align: center;
-            cursor: pointer;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 700;
-            font-size: 1em;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 12px;
-            border: 1px solid var(--vidro-borda);
-            background: var(--vidro);
-            color: rgba(255,255,255,0.5);
-            transition: all 0.25s ease;
-        }
-
-        .aba:hover {
-            color: var(--branco);
-            background: rgba(255,255,255,0.1);
-        }
-
-        .aba.ativa {
-            background: var(--dourado);
-            color: var(--azul-escuro);
-            border-color: var(--dourado);
-            box-shadow: 0 4px 20px rgba(255,215,0,0.3);
-        }
-
-        /* ── CONTEÚDO ── */
-        .conteudo-aba {
-            display: none;
-            animation: aparecer 0.3s ease;
-        }
-
-        .conteudo-aba.ativa {
-            display: block;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── INPUTS ── */
-        .grupo-input {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9em;
-            color: rgba(255,255,255,0.75);
-            letter-spacing: 0.3px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--vidro-borda);
-            background: rgba(0,0,0,0.25);
-            color: var(--branco);
-            font-size: 15px;
-            font-family: 'Barlow', sans-serif;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--dourado);
-            box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: rgba(255,255,255,0.3);
-        }
-
-        select option {
-            background: var(--azul-escuro);
-            color: var(--branco);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        /* ── BOTÃO ── */
-        .btn-principal {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--dourado), var(--dourado-suave));
-            color: var(--azul-escuro);
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(255,215,0,0.25);
-        }
-
-        .btn-principal:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255,215,0,0.4);
-        }
-
-        .btn-principal:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* ── RESULTADO ── */
-        #resultado, #resultadoDenuncia {
-            margin-top: 16px;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            display: none;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.15em;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            animation: aparecer 0.4s ease;
-        }
-
-        .seguro {
-            background: rgba(46,204,113,0.15);
-            border: 1px solid rgba(46,204,113,0.5);
-            color: #2ecc71;
-        }
-
-        .perigo {
-            background: rgba(231,76,60,0.15);
-            border: 1px solid rgba(231,76,60,0.5);
-            color: #ff6b6b;
-        }
-
-        .alerta {
-            background: rgba(243,156,18,0.15);
-            border: 1px solid rgba(243,156,18,0.5);
-            color: #f39c12;
-        }
-
-        .sucesso {
-            background: rgba(46,204,113,0.15);
-            border: 1px solid rgba(46,204,113,0.5);
-            color: #2ecc71;
-        }
-
-        /* ── AVISO DENÚNCIA ── */
-        .aviso-denuncia {
-            background: rgba(255,215,0,0.07);
-            border: 1px solid rgba(255,215,0,0.2);
-            border-left: 3px solid var(--dourado);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 18px;
-            color: rgba(255,215,0,0.85);
-            font-size: 0.88em;
-            line-height: 1.6;
-        }
-
-        .aviso-denuncia strong {
-            color: var(--dourado);
-        }
-
-        /* ── RODAPÉ ── */
-        .rodape {
-            text-align: center;
-            margin-top: 24px;
-            padding: 16px;
-            font-size: 0.78em;
-            color: rgba(255,255,255,0.3);
-            letter-spacing: 0.5px;
-            border-top: 1px solid var(--vidro-borda);
-        }
-
-        /* ── DIVISOR ── */
-        .divisor {
-            height: 1px;
-            background: var(--vidro-borda);
-            margin: 20px 0;
-        }
-    </style>
 </head>
 <body>
+<div class="shell">
+  <header class="top">
+    <a class="brand" href="#inicio" aria-label="Sentinela Cidadão, página inicial">
+      <svg viewBox="0 0 32 36" aria-hidden="true"><path fill="currentColor" d="M16 1.5 3.5 6.2v9.4c0 8.3 5.2 14.6 12.5 18.9 7.3-4.3 12.5-10.6 12.5-18.9V6.2z"/><path d="m10 17.5 4.2 4.2L22.5 13" fill="none" stroke="var(--on-blue)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><b>Sentinela Cidadão</b><small>São Fidélis · RJ</small></span>
+    </a>
+    <a class="sos" href="#caiu">Já caí</a>
+  </header>
+  <nav class="tabs" aria-label="Seções do site">
+    <a href="#inicio">Início</a>
+    <a href="#golpes">Golpes</a>
+    <a href="#teste">Teste</a>
+    <a href="#protecao">Proteção</a>
+    <a href="#consulta">Consulta</a>
+  </nav>
 
-<div class="container">
+  <main>
+  <!-- INÍCIO -->
+  <section class="view" data-view="inicio">
+    <p class="eyebrow">Orientação contra golpes para moradores de São Fidélis</p>
+    <h1>Antes de pagar, clicar ou responder, <mark>pare e confirme.</mark></h1>
+    <p class="lead">Golpistas vivem de pressa, medo e promessa fácil. Aqui você reconhece os golpes mais comuns, se protege antes e sabe o que fazer se já caiu.</p>
 
-    <!-- HEADER -->
-    <div class="header">
-        <div class="logo-wrap">🛡️</div>
-        <h1>Sentinela Cidadão</h1>
-        <p class="frase-cidade">💙 São Fidélis Protegida 🤍</p>
+    <form id="homeSearch" class="searchrow" role="search">
+      <div class="field" style="margin:0">
+        <label class="l" for="hq">Recebeu algo estranho? Procure pelo assunto</label>
+        <input type="search" id="hq" placeholder="Ex.: Pix, motoboy, INSS, link, prêmio" autocomplete="off">
+      </div>
+      <button class="btn" type="submit" style="align-self:end">Buscar</button>
+    </form>
+
+    <div class="doors">
+      <a class="door" href="#teste"><b>Recebi uma mensagem estranha</b><span>Responda algumas perguntas e veja se há sinais de golpe.</span><i aria-hidden="true">→</i></a>
+      <a class="door red" href="#caiu"><b>Já caí em um golpe</b><span>O que fazer nas primeiras horas, passo a passo.</span><i aria-hidden="true">→</i></a>
+      <a class="door" href="#protecao"><b>Quero me proteger</b><span>Dez hábitos que travam a maioria dos golpes.</span><i aria-hidden="true">→</i></a>
     </div>
 
-    <!-- CARD IA -->
-    <div class="card" style="margin-bottom: 16px;">
-        <div class="chat-ia">
-            <span class="robo">🤖</span>
-            <div class="texto-ia">
-                <strong>Olá, cidadão fidélense!</strong><br>
-                Sistema verificado e aprovado.<br>
-                Análise baseada em padrões conhecidos de golpes.<br>
-                Vamos juntos proteger nossa cidade! 🚔💙
-                <br>
-                <span class="badge-ativo">SISTEMA ATIVO</span>
-            </div>
-        </div>
+    <div class="block rule">
+      <h2>A regra de ouro</h2>
+      <p>Quem entrou em contato primeiro não é quem você deve ligar de volta. <strong>Desligue e ligue você mesmo</strong> para o número oficial: o do verso do cartão, o do site ou o do aplicativo oficial.</p>
     </div>
 
-    <!-- ABAS -->
-    <div class="abas">
-        <div class="aba ativa" id="aba-verificar" onclick="mudarAba('verificar')">🔍 Verificar</div>
-        <div class="aba" id="aba-denunciar" onclick="mudarAba('denunciar')">📢 Denunciar</div>
+    <div class="block">
+      <h2>Seis sinais de que é golpe</h2>
+      <ul class="signs">
+        <li><strong>Pressa</strong><span>“Só hoje”, “sua conta será bloqueada”, “pague agora”.</span></li>
+        <li><strong>Pedido de senha, token ou código</strong><span>Nenhum banco ou empresa séria pede isso por telefone ou mensagem.</span></li>
+        <li><strong>Pix para uma pessoa</strong><span>Cobrança de empresa ou órgão público em conta de pessoa física.</span></li>
+        <li><strong>Ganho fácil</strong><span>Prêmio que você não esperava, lucro garantido, “dobre seu dinheiro”.</span></li>
+        <li><strong>Pedido de segredo</strong><span>“Não conte a ninguém”, “não ligue para o banco”.</span></li>
+        <li><strong>Aplicativo ou link novo</strong><span>Pedem para instalar algo, compartilhar a tela ou abrir um endereço.</span></li>
+      </ul>
     </div>
 
-    <!-- CARD CONTEÚDO -->
-    <div class="card">
-
-        <!-- ABA VERIFICAR -->
-        <div id="verificar" class="conteudo-aba ativa">
-            <div class="grupo-input">
-                <label>Digite o site ou Chave Pix:</label>
-                <input type="text" id="entradaUsuario" placeholder="Ex: https://site.com.br ou 123.456.789-09">
-            </div>
-            <button class="btn-principal" onclick="verificarSeguranca()">🔍 VERIFICAR AGORA</button>
-            <div id="resultado"></div>
-        </div>
-
-        <!-- ABA DENUNCIAR -->
-        <div id="denunciar" class="conteudo-aba">
-            <div class="aviso-denuncia">
-                ⚠️ <strong>Como funciona a denúncia?</strong><br>
-                Sua denúncia será salva e analisada pela nossa equipe.<br>
-                Ela só entra na lista de bloqueio <strong>após aprovação</strong>.<br>
-                Isso evita que sites legítimos sejam bloqueados por engano.
-            </div>
-            <div class="grupo-input">
-                <label>Tipo de problema:</label>
-                <select id="tipoDenuncia">
-                    <option value="site">Site Falso / Tentativa de Golpe</option>
-                    <option value="pix">Pix Irregular / Extorsão</option>
-                </select>
-            </div>
-            <div class="grupo-input">
-                <label>Digite o endereço ou a chave:</label>
-                <input type="text" id="valorDenuncia" placeholder="Cole aqui o link do site ou a chave Pix">
-            </div>
-            <div class="grupo-input">
-                <label>🤖 Conte para a IA o que aconteceu:</label>
-                <textarea id="descricao" rows="3" placeholder="Ex: Recebi um Pix falso dizendo ser da prefeitura..."></textarea>
-            </div>
-            <button class="btn-principal" onclick="cadastrarDenuncia()">📢 ENVIAR DENÚNCIA SEGURA</button>
-            <div id="resultadoDenuncia"></div>
-        </div>
-
+    <div class="block">
+      <h2>Comece por estes</h2>
+      <p class="muted">Os golpes que mais atingem famílias brasileiras.</p>
+      <div class="doors" style="margin-top:10px">
+        <a class="door" href="#golpes" data-open="falso-parente"><b>Falso parente no WhatsApp</b><span>Número novo, foto conhecida, Pix urgente.</span><i aria-hidden="true">→</i></a>
+        <a class="door" href="#golpes" data-open="falsa-central"><b>Falsa central do banco</b><span>Ligação pedindo senha, código ou “conta segura”.</span><i aria-hidden="true">→</i></a>
+        <a class="door" href="#golpes" data-open="link-falso"><b>Link falso por mensagem</b><span>Pacote retido, multa, CPF irregular.</span><i aria-hidden="true">→</i></a>
+        <a class="door" href="#golpes" data-open="investimento"><b>Investimento milagroso</b><span>Lucro alto e garantido que não existe.</span><i aria-hidden="true">→</i></a>
+      </div>
     </div>
 
-    <!-- RODAPÉ -->
-    <div class="rodape" id="rodape">
-        Protegendo os cidadãos de São Fidélis &nbsp;|&nbsp; Moderação Aprovada &nbsp;|&nbsp; Dados Seguros 💙
+    <div class="block panel">
+      <h2>Compartilhe com a família</h2>
+      <p>Quem mais precisa dessa informação muitas vezes é quem menos usa a internet. Envie para pais, avós e vizinhos.</p>
+      <div class="row-btns">
+        <a class="btn" id="shareZap" href="https://wa.me/" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
+        <button class="btn ghost" type="button" data-copytext="share">Copiar texto</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOLPES -->
+  <section class="view" data-view="golpes" hidden>
+    <p class="eyebrow">Catálogo</p>
+    <h1>Golpes mais comuns</h1>
+    <p class="lead">Como cada golpe funciona, quais são os sinais e o que fazer. Toque em um item para abrir.</p>
+    <div class="field" style="margin-top:18px">
+      <label class="l" for="q">Buscar golpe</label>
+      <input type="search" id="q" placeholder="Digite uma palavra: Pix, banco, cartão, INSS..." autocomplete="off">
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo"></div>
+    <p class="count" id="count" aria-live="polite"></p>
+    <div id="lista"></div>
+  </section>
+
+  <!-- TESTE -->
+  <section class="view" data-view="teste" hidden>
+    <p class="eyebrow">Ferramenta</p>
+    <h1>Parece golpe?</h1>
+    <p class="lead">Marque o que está acontecendo. O teste aponta sinais de alerta, mas <strong>nunca garante</strong> que algo é seguro.</p>
+    <div class="panel" style="margin-top:20px">
+      <div id="perguntas"></div>
+      <div class="row-btns">
+        <button class="btn" id="btnTeste" type="button">Ver orientação</button>
+        <button class="btn ghost" id="btnLimpar" type="button">Limpar</button>
+      </div>
+      <div class="res" id="resTeste" hidden aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- PROTEÇÃO -->
+  <section class="view" data-view="protecao" hidden>
+    <p class="eyebrow">Prevenção</p>
+    <h1>Proteja-se antes</h1>
+    <p class="lead">Poucos ajustes de 10 minutos impedem a maioria dos golpes. Marque o que você já fez. O progresso fica salvo só neste aparelho.</p>
+
+    <div class="block panel" style="margin-top:22px">
+      <h2>Seus dez hábitos de proteção</h2>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="bar"><i id="barFill"></i></div>
+      <p class="small muted" id="barTxt" style="margin-bottom:8px">0 de 10 feitos</p>
+      <div id="checks"></div>
+      <div class="done" id="doneMsg" hidden>Você fez tudo da lista. Agora ajude alguém da família a fazer o mesmo.</div>
     </div>
 
+    <div class="block">
+      <h2>Para quem cuida de idosos</h2>
+      <p class="muted">Pessoas mais velhas são alvo frequente, principalmente de falsa central, motoboy, INSS e falso parente.</p>
+      <ul class="signs">
+        <li><strong>Converse sem julgar</strong><span>Explique que qualquer pessoa pode cair e que avisar rápido é o que protege.</span></li>
+        <li><strong>Combinem uma palavra-código</strong><span>Só a família sabe. Quem pedir dinheiro em nome de um parente precisa dizer a palavra.</span></li>
+        <li><strong>Regra de um minuto</strong><span>Antes de qualquer Pix ou senha, ligar para um familiar de confiança.</span></li>
+        <li><strong>Limite de Pix baixo</strong><span>Reduza o valor máximo e o limite noturno no aplicativo do banco.</span></li>
+        <li><strong>Cartão e senha são pessoais</strong><span>Ninguém vai buscar cartão em casa. Nunca entregar a motoboy.</span></li>
+        <li><strong>Números salvos</strong><span>Deixe salvo, com nome claro, o telefone oficial do banco e de familiares.</span></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2>Como conferir um site</h2>
+      <ul class="signs">
+        <li><strong>O cadeado não basta</strong><span>Sites falsos também têm cadeado. Ele só indica que a conexão é criptografada.</span></li>
+        <li><strong>Digite você mesmo</strong><span>Evite entrar por link recebido. Abra o aplicativo ou digite o endereço.</span></li>
+        <li><strong>Procure letras trocadas</strong><span>Ex.: um número 1 no lugar de “i”, ou palavras extras no endereço.</span></li>
+        <li><strong>Órgãos públicos usam gov.br</strong><span>Confira o final do endereço. Prefeituras costumam usar .rj.gov.br.</span></li>
+        <li><strong>Dados da empresa</strong><span>Procure CNPJ, endereço e canais de atendimento reais.</span></li>
+        <li><strong>Preço bom demais</strong><span>Compare com outras lojas e pesquise reclamações antes de pagar.</span></li>
+      </ul>
+    </div>
+
+    <div class="block panel">
+      <h2>Meu cartão de emergência</h2>
+      <p class="muted">Deixe anotado onde você achará rápido, em caso de golpe. Fica salvo só neste aparelho e nada é enviado.</p>
+      <div class="field"><label class="l" for="ec-banco">Telefone oficial do meu banco</label><input type="text" id="ec-banco" placeholder="Ex.: o número do verso do cartão" autocomplete="off"></div>
+      <div class="field"><label class="l" for="ec-pessoa">Pessoa de confiança (nome e telefone)</label><input type="text" id="ec-pessoa" placeholder="Ex.: Maria, filha, (22) 9...." autocomplete="off"></div>
+      <p class="small muted" id="ecMsg" style="margin:0"></p>
+    </div>
+  </section>
+
+  <!-- CAÍ -->
+  <section class="view" data-view="caiu" hidden>
+    <p class="eyebrow">Ajuda imediata</p>
+    <h1>Caí em um golpe. E agora?</h1>
+    <div class="alert"><p><strong>Aja agora.</strong> Quanto mais cedo você avisa o banco, maiores as chances de bloquear o dinheiro. Cair em golpe não é vergonha: golpistas enganam gente atenta todos os dias.</p></div>
+
+    <ol class="steps">
+      <li><div><h3>Ligue para o seu banco agora</h3>
+        <p>Use o aplicativo ou o telefone oficial. Diga que foi <strong>fraude com Pix</strong> e peça para abrir o pedido do <strong>MED (Mecanismo Especial de Devolução)</strong>.</p>
+        <p class="muted small">O pedido pode ser feito em até 80 dias após a transferência, mas o dinheiro só é bloqueado se ainda estiver na conta do golpista. O valor devolvido pode ser parcial e não há garantia. O MED vale para fraude e golpe, não para arrependimento de compra, Pix enviado por engano ou desacordo comercial.</p></div></li>
+      <li><div><h3>Proteja suas contas</h3>
+        <p>Troque as senhas do banco, do e-mail e das redes, usando outro aparelho se puder. Bloqueie o cartão se passou dados. No WhatsApp, ative a confirmação em duas etapas e saia de aparelhos desconhecidos.</p></div></li>
+      <li><div><h3>Guarde as provas</h3>
+        <p>Prints da conversa, número ou perfil do golpista, chave Pix, comprovante, links e valor. <strong>Não apague nada</strong> nem a conversa.</p></div></li>
+      <li><div><h3>Registre o boletim de ocorrência</h3>
+        <p>Pela Delegacia Online da Polícia Civil do RJ ou em uma delegacia. O BO ajuda o banco e a investigação. Use o relato pronto abaixo.</p></div></li>
+      <li><div><h3>Confira se há algo em seu nome</h3>
+        <p>No Registrato, do Banco Central, você vê contas, chaves Pix e empréstimos ligados ao seu CPF. Se passou foto de documento, fique atento a novas contas ou dívidas.</p></div></li>
+      <li><div><h3>Avise quem pode ser o próximo alvo</h3>
+        <p>Se usaram seu WhatsApp ou seu nome, avise familiares e contatos. Denuncie e bloqueie o golpista no próprio aplicativo.</p></div></li>
+    </ol>
+
+    <div class="block">
+      <h2>Se o seu caso foi outro</h2>
+      <details class="faq"><summary>Passei senha, token ou código</summary><div><ul><li>Ligue para o banco agora e peça bloqueio de acessos.</li><li>Troque a senha de outro aparelho.</li><li>Revise transferências e dispositivos conectados na conta.</li></ul></div></details>
+      <details class="faq"><summary>Instalei um aplicativo a pedido do golpista</summary><div><ul><li>Desligue a internet do aparelho e desinstale o aplicativo.</li><li>Troque todas as senhas de outro aparelho.</li><li>Avise o banco que houve acesso remoto.</li></ul></div></details>
+      <details class="faq"><summary>Cliquei em um link e digitei dados</summary><div><ul><li>Troque as senhas das contas que digitou.</li><li>Se digitou dados do cartão, bloqueie o cartão.</li><li>Fique atento a cobranças e mensagens novas.</li></ul></div></details>
+      <details class="faq"><summary>Entreguei o cartão ou a senha a alguém</summary><div><ul><li>Bloqueie o cartão imediatamente pelo aplicativo ou telefone oficial.</li><li>Avise o banco de que houve entrega a terceiro.</li><li>Registre o boletim de ocorrência.</li></ul></div></details>
+      <details class="faq"><summary>Meu WhatsApp foi clonado</summary><div><ul><li>Reinstale o WhatsApp com o seu número para retomar a conta.</li><li>Ative a confirmação em duas etapas.</li><li>Avise seus contatos para não enviarem dinheiro.</li></ul></div></details>
+      <details class="faq"><summary>Enviei foto de documento ou selfie</summary><div><ul><li>Registre o boletim de ocorrência.</li><li>Consulte o Registrato para ver contas e empréstimos em seu nome.</li><li>Acompanhe seu CPF e avise o banco.</li></ul></div></details>
+    </div>
+
+    <div class="block panel">
+      <h2>Monte o seu relato</h2>
+      <p class="muted">Preencha e gere um texto pronto para levar ao banco ou à delegacia. Nada é enviado: o texto fica só na sua tela.</p>
+      <div class="field"><label class="l" for="rTipo">Tipo de golpe</label>
+        <select id="rTipo"><option>Pix ou transferência</option><option>Falso parente no WhatsApp</option><option>Falsa central do banco</option><option>Link falso (phishing)</option><option>Compra ou venda</option><option>Investimento ou prêmio</option><option>Outro</option></select></div>
+      <div class="field"><label class="l" for="rData">Data e hora aproximada</label><input type="text" id="rData" placeholder="Ex.: 12/11/2026, por volta das 15h"></div>
+      <div class="field"><label class="l" for="rContato">Número, perfil, site ou chave Pix do golpista</label><input type="text" id="rContato" placeholder="Telefone, link ou chave"></div>
+      <div class="field"><label class="l" for="rBanco">Banco e valor</label><input type="text" id="rBanco" placeholder="Ex.: Banco X, R$ 500,00"></div>
+      <div class="field"><label class="l" for="rDesc">O que aconteceu</label><textarea id="rDesc" placeholder="Conte em ordem: quem entrou em contato, o que pediu, o que você fez."></textarea></div>
+      <button class="btn block-w" id="btnRelato" type="button">Gerar texto do relato</button>
+      <pre class="out" id="saidaRelato" hidden></pre>
+      <div class="row-btns" id="relatoBtns" hidden>
+        <button class="btn ghost" type="button" data-copytext="relato">Copiar relato</button>
+        <a class="btn ghost" id="relatoZap" href="https://wa.me/" target="_blank" rel="noopener">Alertar a família</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSULTA -->
+  <section class="view" data-view="consulta" hidden>
+    <p class="eyebrow">Referência</p>
+    <h1>Consulta rápida</h1>
+    <div class="jump">
+      <button class="chip" type="button" data-goto="canais">Canais oficiais</button>
+      <button class="chip" type="button" data-goto="glossario">Glossário</button>
+      <button class="chip" type="button" data-goto="faq">Perguntas</button>
+      <button class="chip" type="button" data-goto="sobre">Sobre</button>
+    </div>
+
+    <div class="block" id="canais">
+      <h2>Canais oficiais</h2>
+      <p class="muted">Telefones e endereços mudam. Confirme sempre no site oficial do órgão ou do seu banco.</p>
+      <div class="contact"><div><h3>Polícia Militar</h3><p>Emergência e crime em andamento.</p></div><strong class="v">190</strong></div>
+      <div class="contact"><div><h3>Disque Denúncia RJ</h3><p>Denúncia anônima.</p></div><strong class="v">(21) 2253-1177</strong></div>
+      <div class="contact"><div><h3>Delegacia Online, Polícia Civil do RJ</h3><p>Registrar boletim de ocorrência de golpe. Confira o endereço em policiacivil.rj.gov.br.</p></div><strong class="v">delegaciaonline.rj.gov.br</strong></div>
+      <div class="contact"><div><h3>Registrato, Banco Central</h3><p>Veja contas, chaves Pix e empréstimos em seu nome.</p></div><strong class="v">registrato.bcb.gov.br</strong></div>
+      <div class="contact"><div><h3>Banco Central</h3><p>Lista de instituições autorizadas e canais de reclamação.</p></div><strong class="v">bcb.gov.br</strong></div>
+      <div class="contact"><div><h3>CVM</h3><p>Confira se quem oferece investimento é autorizado.</p></div><strong class="v">gov.br/cvm</strong></div>
+      <div class="contact"><div><h3>Consumidor.gov.br</h3><p>Reclamação contra empresas, com resposta no prazo.</p></div><strong class="v">consumidor.gov.br</strong></div>
+      <div class="contact"><div><h3>INSS</h3><p>Descontos, benefícios e golpes contra aposentados.</p></div><strong class="v">135 · meu.inss.gov.br</strong></div>
+      <div class="contact"><div><h3>Anatel</h3><p>Ligações abusivas e bloqueio de telemarketing (“Não Me Perturbe”).</p></div><strong class="v">1331</strong></div>
+      <div class="contact"><div><h3>OAB, cadastro de advogados</h3><p>Confirme se quem se diz advogado é inscrito.</p></div><strong class="v">cna.oab.org.br</strong></div>
+      <p class="small muted" style="margin-top:12px">Para problemas de compra, procure também o Procon do seu município.</p>
+    </div>
+
+    <div class="block" id="glossario">
+      <h2>Glossário</h2>
+      <dl>
+        <dt>Engenharia social</dt><dd>Técnica de convencer pessoas a entregar dados ou dinheiro, usando confiança, medo ou pressa.</dd>
+        <dt>Phishing</dt><dd>Mensagem ou site falso que imita uma empresa para roubar senhas e dados.</dd>
+        <dt>Smishing e vishing</dt><dd>Phishing por SMS (smishing) e por ligação (vishing).</dd>
+        <dt>Token</dt><dd>Código temporário que confirma uma operação no banco. Nunca deve ser passado a ninguém.</dd>
+        <dt>Chave Pix</dt><dd>Identificador de uma conta (CPF, telefone, e-mail ou chave aleatória). Quem tem a chave só recebe, não acessa sua conta.</dd>
+        <dt>MED</dt><dd>Mecanismo Especial de Devolução do Pix. Permite pedir ao banco o bloqueio e a devolução de valores em caso de fraude ou golpe.</dd>
+        <dt>Conta laranja</dt><dd>Conta usada para receber dinheiro de golpe. O titular pode ser investigado.</dd>
+        <dt>Acesso remoto</dt><dd>Aplicativo que deixa outra pessoa ver e controlar seu aparelho a distância.</dd>
+        <dt>Clonagem de WhatsApp</dt><dd>Quando alguém assume sua conta usando o código de verificação que você passou.</dd>
+        <dt>Deepfake</dt><dd>Voz, imagem ou vídeo falsos criados com inteligência artificial para imitar uma pessoa.</dd>
+        <dt>Confirmação em duas etapas</dt><dd>Segunda camada de segurança, como um PIN extra, que impede o uso da conta só com a senha ou o código.</dd>
+      </dl>
+    </div>
+
+    <div class="block" id="faq">
+      <h2>Perguntas frequentes</h2>
+      <details class="faq"><summary>O banco vai devolver o meu dinheiro?</summary><div><p>Não há garantia. O MED bloqueia e devolve o que ainda estiver na conta do golpista, que pode ser só uma parte. Por isso avisar rápido faz diferença.</p></div></details>
+      <details class="faq"><summary>O banco pode ligar pedindo meus dados?</summary><div><p>Pode ligar, mas nunca pede senha, token, código por SMS nem que você transfira dinheiro. Na dúvida, desligue e ligue para o número do verso do cartão.</p></div></details>
+      <details class="faq"><summary>O golpista sabe meu nome e CPF. Isso prova que é do banco?</summary><div><p>Não. Esses dados vazam com frequência e golpistas os usam para parecer confiáveis.</p></div></details>
+      <details class="faq"><summary>Devo responder o golpista para enrolar?</summary><div><p>O melhor é não responder, bloquear e denunciar. Quanto mais conversa, mais chances de ser enganado.</p></div></details>
+      <details class="faq"><summary>Como denunciar um número no WhatsApp?</summary><div><p>Abra a conversa, toque no nome do contato e escolha Denunciar. Depois bloqueie o número.</p></div></details>
+      <details class="faq"><summary>Posso cair mesmo sendo cuidadoso?</summary><div><p>Sim. Golpes bem feitos enganam qualquer um. O que protege é ter o hábito de parar, confirmar por outro canal e pedir ajuda cedo.</p></div></details>
+      <details class="faq"><summary>Este site recebe denúncias?</summary><div><p>Não. Para denunciar, use os canais oficiais de polícia, banco e plataformas listados em Canais oficiais.</p></div></details>
+    </div>
+
+    <div class="block panel" id="sobre">
+      <h2>Sobre este site</h2>
+      <p>O Sentinela Cidadão é uma iniciativa de orientação para a comunidade de São Fidélis, no Rio de Janeiro. É um material informativo e gratuito.</p>
+      <p>Este site <strong>não é um canal oficial</strong> de órgão público, banco ou polícia, não substitui o atendimento deles nem aconselhamento jurídico, e <strong>não coleta dados nem recebe denúncias</strong>. O que você digita nas ferramentas fica só na sua tela e neste aparelho.</p>
+      <p class="small muted">Última revisão: 12 de novembro de 2026.</p>
+      <h4>Fontes consultadas</h4>
+      <ul class="srcs small">
+        <li><a href="https://www.cora.com.br/blog/med/" target="_blank" rel="noopener">Cora: como funciona o MED do Pix</a></li>
+        <li><a href="https://meutudo.com.br/blog/noticias/2026/09/02/prazo-para-contestacao-de-pix-devolvido-pelo-med-passa-de-30-para-80-dias-entenda/" target="_blank" rel="noopener">MeuTudo: prazo de contestação do MED passa para 80 dias</a></li>
+      </ul>
+    </div>
+  </section>
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Atalhos">
+      <a href="#golpes">Golpes</a><a href="#teste">Teste</a><a href="#protecao">Proteção</a><a href="#caiu">Já caí</a><a href="#consulta">Consulta</a>
+    </nav>
+    <p><strong>Sentinela Cidadão</strong> · orientação gratuita para moradores de São Fidélis (RJ).</p>
+    <p>Material informativo. Não é canal oficial de órgão público, banco ou polícia e não substitui orientação profissional.</p>
+  </footer>
 </div>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <script>
-    // ── FIREBASE ──
-    const firebaseConfig = {
-        apiKey: "SUA_API_KEY_AQUI",
-        authDomain: "sentinela-cidad.firebaseapp.com",
-        projectId: "sentinela-cidad",
-        storageBucket: "sentinela-cidad.appspot.com",
-        messagingSenderId: "645213005112",
-        appId: "1:645213005112:web:dae57f5ebd6c9cfa39cdcd",
-        databaseURL: "https://sentinela-cidad-default-rtdb.firebaseio.com"
-    };
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function lsGet(k,d){try{var v=window.localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function lsSet(k,v){try{window.localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function norm(s){return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let bancoDeDados = null;
+/* ---------- rotas por hash ---------- */
+var VIEWS=["inicio","golpes","teste","protecao","caiu","consulta"];
+function route(){
+  var h=(location.hash||"").replace("#","");
+  if(VIEWS.indexOf(h)<0)h="inicio";
+  $$(".view").forEach(function(v){v.hidden=v.getAttribute("data-view")!==h});
+  $$(".tabs a").forEach(function(a){
+    if(a.getAttribute("href")==="#"+h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
 
-    try {
-        firebase.initializeApp(firebaseConfig);
-        bancoDeDados = firebase.database();
-        carregarContador();
-    } catch (e) {
-        console.warn("Firebase não inicializado:", e.message);
-    }
+/* ---------- catálogo de golpes ---------- */
+var LAB={whatsapp:"WhatsApp",telefone:"Telefone",internet:"Internet",pix:"Pix",idosos:"Idosos",presencial:"Presencial"};
+var GOLPES=[
+{id:"falso-parente",nome:"Falso parente ou amigo com número novo",cats:["whatsapp","pix","idosos"],k:"mudei de numero perdi celular filho mae",
+ como:"Alguém usa a foto de um parente no WhatsApp e escreve que mudou de número ou perdeu o celular. Logo depois pede um Pix urgente, dizendo que a conta dele está bloqueada.",
+ sinais:["Número novo com foto conhecida","Pede dinheiro com pressa e diz que não pode falar","Evita ligação e chamada de vídeo","Pede para pagar um boleto “só hoje”"],
+ fazer:["Ligue para o número antigo do parente","Faça chamada de vídeo ou pergunte algo que só ele saberia","Não faça Pix só com base em mensagem de texto","Bloqueie e denuncie o contato no WhatsApp"]},
+{id:"falsa-central",nome:"Falsa central do banco",cats:["telefone","pix","idosos"],k:"ligacao banco conta segura token senha funcionario",
+ como:"Ligam dizendo ser do banco, avisam de compra ou movimentação suspeita e pedem senha, código recebido por SMS ou que você “transfira para uma conta segura”. Como já sabem seu nome e CPF, parecem confiáveis.",
+ sinais:["Pedem senha, token ou código","Mandam instalar aplicativo ou digitar algo durante a ligação","Dizem para não desligar","Mandam transferir para uma “conta segura”"],
+ fazer:["Desligue. Banco não pede senha, token ou código por telefone","Ligue você mesmo para o número do verso do cartão, de preferência de outro telefone, pois o golpista pode manter a linha presa","Não existe conta segura para transferir dinheiro","Se já passou algum dado, avise o banco na hora"]},
+{id:"motoboy",nome:"Golpe do motoboy e do cartão",cats:["telefone","presencial","idosos"],k:"cartao clonado buscar casa entrega maquininha",
+ como:"Dizem que seu cartão foi clonado ou será bloqueado e que um motoboy vai buscá-lo em casa. Pedem o cartão, às vezes “cortado”, mas com o chip, e a senha.",
+ sinais:["Alguém vai à sua casa buscar cartão","Pedem sua senha ou que você digite na maquininha","Dizem que o banco enviou um portador"],
+ fazer:["Banco nunca manda ninguém buscar cartão nem pede senha","Não entregue cartão, senha nem celular","Ligue para o banco pelo número oficial e bloqueie o cartão","Se já entregou, bloqueie o cartão e registre boletim de ocorrência"]},
+{id:"link-falso",nome:"Link falso por SMS, e-mail ou WhatsApp",cats:["internet","whatsapp"],k:"phishing pacote correios multa cpf irregular fatura restituicao atualizar cadastro",
+ como:"Mensagem sobre pacote retido, multa, CPF irregular, fatura, restituição ou “atualização de cadastro”, com um link que imita um site oficial para roubar senhas e dados do cartão.",
+ sinais:["Link encurtado ou com grafia estranha","Urgência e ameaça","Remetente desconhecido","Pedido de dados do cartão ou do CPF"],
+ fazer:["Não clique","Abra o aplicativo ou digite o endereço oficial você mesmo","Se clicou e digitou dados, troque as senhas e avise o banco","Bloqueie e denuncie o remetente"]},
+{id:"investimento",nome:"Investimento milagroso e renda fácil",cats:["internet","whatsapp","pix"],k:"cripto bitcoin robo trading tarefas curtidas lucro garantido piramide dobrar dinheiro",
+ como:"Promessa de lucro alto e garantido, “robôs” de investimento, criptomoedas ou “tarefas” pagas por curtidas. Começa com pequenos pagamentos para ganhar confiança e depois pede depósitos maiores.",
+ sinais:["Lucro garantido e rápido","Grupos de mensagem cheios de “depoimentos”","Pressão para entrar logo","Pedem um depósito para liberar o saque"],
+ fazer:["Confira se a empresa é autorizada no site do Banco Central ou da CVM","Desconfie de retorno garantido","Pesquise o nome da empresa junto com a palavra golpe","Nunca pague taxa para conseguir sacar"]},
+{id:"premio",nome:"Falso prêmio, sorteio e herança",cats:["internet","telefone","pix"],k:"voce ganhou taxa frete imposto liberar",
+ como:"Avisam que você ganhou um prêmio, sorteio, restituição ou herança, mas precisa pagar taxa, imposto ou frete para liberar.",
+ sinais:["Prêmio de algo de que você não participou","Taxa paga antes de receber","Pressa para pagar"],
+ fazer:["Quem ganha de verdade não paga para receber","Ignore e bloqueie","Se pagou, vá para a página Já caí"]},
+{id:"orgao-publico",nome:"Falso órgão público (prefeitura, Receita, Detran)",cats:["telefone","internet","whatsapp"],k:"prefeitura receita detran multa imposto regularizacao taxa",
+ como:"Mensagem ou ligação em nome de um órgão público cobrando multa, imposto, taxa ou “regularização”, quase sempre com Pix ou link.",
+ sinais:["Cobrança por Pix para conta de pessoa física","Link fora de gov.br","Ameaça de multa ou bloqueio"],
+ fazer:["Confirme a cobrança no site gov.br ou no aplicativo oficial","Na dúvida, vá ao órgão ou ligue para o número do site oficial","Nenhum órgão público pede a senha do seu banco"]},
+{id:"inss",nome:"Golpe contra aposentados e pensionistas",cats:["telefone","whatsapp","idosos"],k:"inss aposentadoria beneficio consignado revisao desconto",
+ como:"Ligam ou escrevem dizendo que há dinheiro a receber, “revisão do benefício” ou desconto indevido, e pedem dados, taxa ou a senha do gov.br. Também há empréstimos consignados feitos sem a pessoa saber.",
+ sinais:["“Devolução” mediante pagamento","Pedem senha do gov.br ou do Meu INSS","Pressa para liberar valores"],
+ fazer:["Confira descontos e benefícios no Meu INSS ou pela central 135, confirmando o número no site oficial","Nunca passe senha do gov.br nem códigos","Peça ajuda a um familiar antes de assinar ou pagar","Se houver desconto que você não reconhece, conteste pelos canais do INSS"]},
+{id:"venda-falsa",nome:"Venda falsa e comprovante falso",cats:["pix","internet"],k:"marketplace olx mercado livre anuncio comprovante print preco baixo",
+ como:"Quem vende some depois do Pix, ou quem compra envia um comprovante falso e pede o produto. Também há anúncios com preço muito abaixo do mercado.",
+ sinais:["Preço bom demais","Pagamento fora da plataforma","Comprovante enviado só em print","Pressão para fechar rápido"],
+ fazer:["Confira o dinheiro no aplicativo do seu banco, nunca só pelo comprovante","Use o pagamento protegido da plataforma","Desconfie de quem leva a conversa para fora do site","Ao vender, entregue o produto só depois que o dinheiro cair"]},
+{id:"sequestro",nome:"Sequestro falso",cats:["telefone","pix","idosos"],k:"extorsao familiar refem resgate",
+ como:"Ligam com choro ou grito ao fundo, dizem ter um familiar seu e exigem Pix imediato, mantendo você na linha para que não confirme.",
+ sinais:["Não deixam você desligar","Exigem pagamento na hora","Pedem que não ligue para ninguém","Voz que parece de um parente"],
+ fazer:["Mantenha a calma e não pague","Desligue e ligue para o familiar ou para alguém perto dele","Combinem uma palavra-código na família","Na dúvida, ligue 190"]},
+{id:"falso-advogado",nome:"Falso advogado ou processo",cats:["whatsapp","telefone","pix"],k:"advogado justica processo alvara valores a receber",
+ como:"Alguém que conhece dados reais de um processo seu escreve como advogado ou funcionário da Justiça, diz que há valores a receber e pede taxa ou Pix para liberar.",
+ sinais:["Cita o número do processo mas pede dinheiro adiantado","Usa foto e nome de advogado real","Pressa para pagar"],
+ fazer:["Confirme com o seu advogado de verdade, pelo número que você já tem","Consulte o processo no site do tribunal","Confira a inscrição na OAB em cna.oab.org.br","Não deposite em conta de terceiros para liberar valores"]},
+{id:"acesso-remoto",nome:"Falso suporte e acesso remoto",cats:["telefone","internet"],k:"anydesk aplicativo instalar compartilhar tela suporte tecnico",
+ como:"Pedem que você instale um aplicativo de acesso remoto para “resolver um problema” ou “cancelar uma compra”. Com isso o golpista vê a tela e movimenta suas contas.",
+ sinais:["Pedem para instalar um aplicativo que você não conhece","Pedem para compartilhar a tela","Pedem para abrir o aplicativo do banco durante a ligação"],
+ fazer:["Não instale nada a pedido de quem ligou","Se instalou, desligue a internet, desinstale e troque as senhas de outro aparelho","Avise o banco"]},
+{id:"boleto-qr",nome:"Boleto adulterado e QR Code falso",cats:["internet","pix","presencial"],k:"codigo de barras adesivo qr code pix pagamento loja",
+ como:"O código de barras do boleto ou o QR Code do Pix é trocado e o dinheiro vai para a conta do golpista. Pode vir por e-mail ou WhatsApp, ou como adesivo colado sobre um QR Code em estabelecimentos.",
+ sinais:["Nome do beneficiário diferente do esperado","Boleto recebido de remetente estranho","Adesivo sobreposto ao QR Code"],
+ fazer:["Antes de pagar, confira o nome do beneficiário no aplicativo do banco","Peça segunda via por canal oficial da empresa","Em loja, confira o nome do recebedor na tela antes de confirmar o Pix"]},
+{id:"vaga-falsa",nome:"Falsa vaga de emprego",cats:["internet","whatsapp"],k:"emprego trabalho home office taxa cadastro uniforme",
+ como:"Anúncio de vaga com bom salário e pouca exigência. Depois pedem taxa de cadastro, exames ou uniforme, fotos de documentos, ou que você receba e repasse dinheiro.",
+ sinais:["Cobram para contratar","Entrevista só por mensagem","Pedem logo foto de documento e selfie","Pedem que você use sua conta para “receber valores”"],
+ fazer:["Empresa séria não cobra para contratar","Confirme a vaga no site oficial da empresa","Não use sua conta para receber e repassar dinheiro de estranhos, pois pode causar problemas com a polícia"]},
+{id:"romance",nome:"Golpe do romance",cats:["internet","whatsapp","pix"],k:"namoro amor relacionamento aplicativo encontro presente alfandega",
+ como:"Alguém que você conheceu na internet cria vínculo afetivo e, depois de um tempo, inventa uma emergência, um presente retido na alfândega ou um investimento e pede dinheiro.",
+ sinais:["Nunca faz chamada de vídeo ao vivo","Histórias de emergência","Pede dinheiro ou segredo"],
+ fazer:["Nunca envie dinheiro a quem só conhece online","Peça chamada de vídeo ao vivo","Converse com alguém de confiança antes de qualquer pagamento"]},
+{id:"clonagem-whatsapp",nome:"Clonagem de WhatsApp (golpe do código)",cats:["whatsapp","internet"],k:"codigo verificacao seis digitos sms conta clonada",
+ como:"Alguém se passa por conhecido, empresa ou suporte e pede o código de 6 dígitos que chegou por SMS. Com o código, o golpista assume seu WhatsApp e pede dinheiro aos seus contatos.",
+ sinais:["Pedem o código de verificação","“Mandei o código por engano, pode me passar?”","Mensagem de contato que nunca fala com você"],
+ fazer:["Nunca passe o código a ninguém","Ative a confirmação em duas etapas no WhatsApp","Se perdeu a conta, reinstale o aplicativo com seu número e avise os contatos"]},
+{id:"voz-ia",nome:"Voz ou vídeo falsos feitos com IA",cats:["telefone","whatsapp","idosos"],k:"deepfake audio inteligencia artificial clonagem de voz",
+ como:"Programas de inteligência artificial podem imitar a voz ou o rosto de uma pessoa a partir de áudios e vídeos publicados na internet. Aparecem em pedidos de dinheiro e em falsas autoridades.",
+ sinais:["Áudio curto, com voz estranha","Pedido urgente de dinheiro","Recusa de conversar ao vivo"],
+ fazer:["Combine uma palavra-código com a família","Confirme por outro caminho, ligando para a pessoa","Não confie só em voz ou vídeo para fazer um pagamento"]},
+{id:"aluguel-falso",nome:"Aluguel e hospedagem falsos",cats:["internet","pix"],k:"imovel casa temporada hospedagem sinal reserva",
+ como:"Anúncio de imóvel ou casa de temporada com preço baixo e fotos copiadas. Pedem um sinal por Pix antes de qualquer visita.",
+ sinais:["Preço muito abaixo do mercado","Dono que “está viajando”","Só aceita Pix antecipado"],
+ fazer:["Visite o imóvel e confira o contrato e o proprietário","Desconfie de pagamento adiantado sem contrato","Use plataformas com pagamento protegido"]}
+];
+var CATS=[["todos","Todos"],["whatsapp","WhatsApp"],["telefone","Telefone"],["internet","Internet"],["pix","Pix"],["idosos","Idosos"],["presencial","Presencial"]];
+var cat="todos",query="";
+var elLista=$("#lista"),elCount=$("#count"),elQ=$("#q"),elChips=$("#chips");
 
-    // ── TROCA DE ABAS ──
-    function mudarAba(nome) {
-        document.querySelectorAll('.conteudo-aba').forEach(el => el.classList.remove('ativa'));
-        document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
-        document.getElementById(nome).classList.add('ativa');
-        document.getElementById('aba-' + nome).classList.add('ativa');
-    }
+function renderChips(){
+  elChips.innerHTML="";
+  CATS.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button";b.className="chip";b.textContent=c[1];
+    b.setAttribute("aria-pressed",cat===c[0]?"true":"false");
+    b.addEventListener("click",function(){cat=c[0];renderChips();renderLista()});
+    elChips.appendChild(b);
+  });
+}
+function itemHtml(g,open){
+  var tags=g.cats.map(function(c){return '<span class="tag">'+LAB[c]+'</span>'}).join("");
+  var li=function(a){return a.map(function(x){return "<li>"+x+"</li>"}).join("")};
+  return '<details class="scam" id="g-'+g.id+'"'+(open?" open":"")+'><summary><span class="nm">'+g.nome+'<span class="tags">'+tags+'</span></span></summary><div class="sb"><h4>Como acontece</h4><p>'+g.como+'</p><h4>Sinais</h4><ul>'+li(g.sinais)+'</ul><h4>O que fazer</h4><ul>'+li(g.fazer)+'</ul></div></details>';
+}
+function renderLista(){
+  var terms=norm(query).split(/\s+/).filter(Boolean);
+  var res=GOLPES.filter(function(g){
+    if(cat!=="todos"&&g.cats.indexOf(cat)<0)return false;
+    if(!terms.length)return true;
+    var hay=norm(g.nome+" "+g.como+" "+g.sinais.join(" ")+" "+g.fazer.join(" ")+" "+(g.k||"")+" "+g.cats.join(" "));
+    return terms.every(function(t){return hay.indexOf(t)>=0});
+  });
+  var autoOpen=terms.length>0&&res.length<=2;
+  elLista.innerHTML=res.length?res.map(function(g){return itemHtml(g,autoOpen)}).join(""):'<p class="empty">Nenhum golpe encontrado. Tente outra palavra, como “Pix”, “banco” ou “link”. Se recebeu algo estranho mesmo assim, use o <a href="#teste">Teste</a>.</p>';
+  elCount.textContent=res.length+" de "+GOLPES.length+" golpes";
+}
+elQ.addEventListener("input",function(){query=elQ.value;renderLista()});
+renderChips();renderLista();
 
-    // ── LIMPAR TEXTO ──
-    function limparTexto(texto) {
-        return texto.toLowerCase().replace(/[^a-z0-9]/g, '');
-    }
+$("#homeSearch").addEventListener("submit",function(e){
+  e.preventDefault();
+  query=$("#hq").value.trim();cat="todos";elQ.value=query;renderChips();renderLista();
+  location.hash="golpes";
+});
+$$("[data-open]").forEach(function(a){
+  a.addEventListener("click",function(){
+    var id=a.getAttribute("data-open");
+    query="";cat="todos";elQ.value="";renderChips();renderLista();
+    setTimeout(function(){
+      var d=$("#g-"+id);
+      if(d){d.open=true;d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})}
+    },120);
+  });
+});
 
-    // ── LISTA DE GOLPES ──
-    const listaOficial = [
-        { chave: "pixmilhao",    motivo: "Golpe do Pix do Milhão" },
-        { chave: "ganhedinheiro", motivo: "Golpe de Renda Fácil" },
-        { chave: "voceganhou",   motivo: "Golpe de Prêmio Falso" },
-        { chave: "bitcoin",      motivo: "Possível golpe de criptomoeda" },
-        { chave: "criptoinvest", motivo: "Fraude de investimento em cripto" },
-        { chave: "prefeitura",   motivo: "Possível impersonação de órgão público" },
-        { chave: "boletofalso",  motivo: "Golpe de boleto falso" },
-        { chave: "atualizecadastro", motivo: "Phishing de atualização de dados" }
-    ];
+/* ---------- teste ---------- */
+var PERG=[
+["Pediram senha, token ou código recebido por SMS ou aplicativo",3,"Nunca passe senha, token ou código. Nenhuma empresa séria pede isso."],
+["Pediram um Pix ou pagamento com urgência",3,"Não pague sob pressão. Confirme por outro caminho antes de qualquer Pix."],
+["Pediram para instalar um aplicativo, compartilhar a tela ou abrir um link",3,"Não instale nem abra nada. Aplicativos de acesso remoto dão controle do seu aparelho ao golpista."],
+["Disseram ser do banco, de um órgão público ou de uma empresa, e entraram em contato primeiro",2,"Desligue e ligue você mesmo para o número oficial, no verso do cartão ou no site."],
+["Prometem prêmio, lucro alto ou retorno garantido",3,"Retorno alto e garantido não existe. Confira se a empresa é autorizada pelo Banco Central ou pela CVM."],
+["Cobram taxa antes de liberar dinheiro, prêmio ou vaga",3,"Quem tem algo a lhe pagar não cobra antes."],
+["Pedem segredo ou dizem para não avisar ninguém",2,"Converse com alguém de confiança. Golpistas querem você sozinho."],
+["Número novo ou desconhecido usando o nome ou a foto de alguém que você conhece",2,"Ligue para o número antigo da pessoa ou faça uma chamada de vídeo."],
+["Há pressa, ameaça ou prazo curto (“só hoje”, “conta será bloqueada”)",2,"Pressa é a principal arma do golpista. Respire e confirme com calma."],
+["O preço ou a oferta parece bom demais para ser verdade",2,"Pesquise o nome da loja ou da pessoa e prefira pagamento protegido."]
+];
+var elP=$("#perguntas");
+PERG.forEach(function(p,i){
+  var l=document.createElement("label");l.className="q";
+  l.innerHTML='<input type="checkbox" data-i="'+i+'"><span>'+p[0]+'</span>';
+  elP.appendChild(l);
+});
+var elRes=$("#resTeste");
+$("#btnTeste").addEventListener("click",function(){
+  var marc=$$("input:checked",elP).map(function(c){return PERG[+c.getAttribute("data-i")]});
+  var pts=marc.reduce(function(s,p){return s+p[1]},0);
+  var adv=marc.slice().sort(function(a,b){return b[1]-a[1]}).slice(0,4).map(function(p){return "<li>"+p[2]+"</li>"}).join("");
+  elRes.hidden=false;
+  if(!marc.length){
+    elRes.className="res low";
+    elRes.innerHTML="<h3>Nenhum sinal marcado</h3><p style=\"margin:8px 0 0\">Isso <strong>não significa que seja seguro</strong>, pois golpes novos surgem sempre. Na dúvida, confirme por um canal oficial.</p>";
+  }else if(pts>=5){
+    elRes.className="res high";
+    elRes.innerHTML="<h3>Muito provável que seja golpe</h3><p style=\"margin:8px 0 0\">Pare agora. Não pague, não clique e não passe dados.</p><ul>"+adv+"<li>Se já pagou ou passou dados, vá para <a href=\"#caiu\">Já caí</a>.</li></ul>";
+  }else{
+    elRes.className="res mid";
+    elRes.innerHTML="<h3>Há sinais de alerta</h3><p style=\"margin:8px 0 0\">Não faça nada ainda. Confirme por outro caminho antes de continuar.</p><ul>"+adv+"</ul>";
+  }
+  elRes.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+});
+$("#btnLimpar").addEventListener("click",function(){
+  $$("input",elP).forEach(function(c){c.checked=false});
+  elRes.hidden=true;
+});
 
-    // ── VERIFICAÇÃO ──
-    function verificarSeguranca() {
-        const entrada = document.getElementById('entradaUsuario').value.trim();
-        const resultado = document.getElementById('resultado');
+/* ---------- hábitos de proteção ---------- */
+var HAB=[
+["Ativar a confirmação em duas etapas no WhatsApp","Configurações > Conta > Confirmação em duas etapas."],
+["Ativar a verificação em duas etapas no e-mail","Protege a conta que recupera todas as outras."],
+["Usar uma senha diferente para banco, e-mail e redes","Um gerenciador de senhas ajuda."],
+["Ajustar os limites do Pix no aplicativo do banco","Valor máximo e limite noturno mais baixos."],
+["Combinar uma palavra-código com a família","Só vocês sabem. Não envie por mensagem."],
+["Instalar aplicativos só nas lojas oficiais","Evite arquivos recebidos por mensagem."],
+["Ter bloqueio de tela e manter o celular atualizado","Senha ou biometria, e atualizações em dia."],
+["Não postar foto de cartão, documento ou comprovantes","Golpistas usam dados públicos."],
+["Salvar os números oficiais do banco no celular","Com nome claro, para não precisar procurar."],
+["Conversar com um familiar idoso sobre golpes","Quem foi avisado antes cai bem menos."]
+];
+var hs=lsGet("sc-hab",[]);
+var elChecks=$("#checks");
+HAB.forEach(function(h,i){
+  var l=document.createElement("label");l.className="check";
+  l.innerHTML='<input type="checkbox" data-h="'+i+'"'+(hs[i]?" checked":"")+'><span>'+h[0]+'<small>'+h[1]+'</small></span>';
+  elChecks.appendChild(l);
+});
+function updHab(){
+  var n=$$("input:checked",elChecks).length;
+  $("#barFill").style.width=(n*10)+"%";
+  $("#bar").setAttribute("aria-valuenow",n);
+  $("#barTxt").textContent=n+" de 10 feitos";
+  $("#doneMsg").hidden=n<10;
+}
+elChecks.addEventListener("change",function(){
+  hs=$$("input",elChecks).map(function(c){return c.checked});
+  lsSet("sc-hab",hs);updHab();
+});
+updHab();
 
-        if (!entrada) {
-            resultado.style.display = 'block';
-            resultado.className = 'alerta';
-            resultado.innerHTML = '⚠️ Digite um site ou chave Pix para verificar.';
-            return;
-        }
+/* cartão de emergência */
+var ec=lsGet("sc-ec",{banco:"",pessoa:""});
+$("#ec-banco").value=ec.banco||"";$("#ec-pessoa").value=ec.pessoa||"";
+function saveEc(){
+  lsSet("sc-ec",{banco:$("#ec-banco").value,pessoa:$("#ec-pessoa").value});
+  $("#ecMsg").textContent="Salvo neste aparelho.";
+}
+$("#ec-banco").addEventListener("input",saveEc);$("#ec-pessoa").addEventListener("input",saveEc);
 
-        const texto = limparTexto(entrada);
-        let risco = 0;
-        let motivo = "";
+/* ---------- relato ---------- */
+var relatoTxt="";
+function val(id){return ($("#"+id).value||"").trim()||"(não informado)"}
+$("#btnRelato").addEventListener("click",function(){
+  relatoTxt="RELATO DE GOLPE\nTipo: "+val("rTipo")+"\nData e hora: "+val("rData")+"\nContato, site ou chave do golpista: "+val("rContato")+"\nBanco e valor: "+val("rBanco")+"\n\nO que aconteceu:\n"+val("rDesc")+"\n\nPosso apresentar: prints da conversa, comprovantes e dados da transação.";
+  var o=$("#saidaRelato");o.textContent=relatoTxt;o.hidden=false;$("#relatoBtns").hidden=false;
+  var desc=($("#rDesc").value||"").trim();
+  var alerta="ALERTA DE GOLPE em São Fidélis ("+$("#rTipo").value+"). "+(desc?desc.slice(0,300)+" ":"")+"Antes de pagar ou clicar, pare e confirme por outro canal. Orientações: Sentinela Cidadão.";
+  $("#relatoZap").href="https://wa.me/?text="+encodeURIComponent(alerta);
+});
 
-        listaOficial.forEach(item => {
-            if (texto.includes(item.chave)) {
-                risco++;
-                motivo = item.motivo;
-            }
-        });
+/* ---------- compartilhar e copiar ---------- */
+var url="";try{url=location.href.split("#")[0]}catch(e){}
+var shareTxt="Sentinela Cidadão: orientação gratuita contra golpes para moradores de São Fidélis. Veja os golpes mais comuns e o que fazer."+(/^https?:/.test(url)?" "+url:"");
+$("#shareZap").href="https://wa.me/?text="+encodeURIComponent(shareTxt);
+function copyText(txt,btn){
+  var orig=btn.textContent;
+  function ok(){btn.textContent="Copiado";setTimeout(function(){btn.textContent=orig},1800)}
+  function fallback(){
+    var t=document.createElement("textarea");t.value=txt;t.setAttribute("readonly","");t.style.position="fixed";t.style.opacity="0";
+    document.body.appendChild(t);t.select();
+    var done=false;try{done=document.execCommand("copy")}catch(e){}
+    document.body.removeChild(t);
+    if(done)ok();else{btn.textContent="Selecione e copie o texto";setTimeout(function(){btn.textContent=orig},2500)}
+  }
+  try{navigator.clipboard.writeText(txt).then(ok,fallback)}catch(e){fallback()}
+}
+$$("[data-copytext]").forEach(function(b){
+  b.addEventListener("click",function(){
+    copyText(b.getAttribute("data-copytext")==="share"?shareTxt:relatoTxt,b);
+  });
+});
 
-        resultado.style.display = 'block';
-
-        if (risco >= 2) {
-            resultado.className = 'perigo';
-            resultado.innerHTML = '⛔ ALTO RISCO! NÃO CLIQUE NEM RESPONDA!';
-        } else if (risco === 1) {
-            resultado.className = 'alerta';
-            resultado.innerHTML = '⚠️ POSSÍVEL GOLPE: ' + motivo;
-        } else {
-            resultado.className = 'seguro';
-            resultado.innerHTML = '✅ Nenhum risco identificado nos padrões conhecidos.';
-        }
-    }
-
-    // ── TECLA ENTER NO INPUT ──
-    document.getElementById('entradaUsuario').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') verificarSeguranca();
-    });
-
-    // ── DENÚNCIA ──
-    function cadastrarDenuncia() {
-        const valor = document.getElementById('valorDenuncia').value.trim();
-        const tipo  = document.getElementById('tipoDenuncia').value;
-        const desc  = document.getElementById('descricao').value.trim();
-        const resDiv = document.getElementById('resultadoDenuncia');
-
-        if (!valor) {
-            resDiv.style.display = 'block';
-            resDiv.className = 'alerta';
-            resDiv.innerHTML = '⚠️ Preencha o endereço ou chave antes de enviar.';
-            return;
-        }
-
-        const denuncia = {
-            tipo: tipo,
-            valor: valor,
-            descricao: desc || "(sem descrição)",
-            data: new Date().toLocaleString('pt-BR')
-        };
-
-        if (bancoDeDados) {
-            bancoDeDados.ref('denuncias').push(denuncia)
-                .then(() => {
-                    resDiv.style.display = 'block';
-                    resDiv.className = 'sucesso';
-                    resDiv.innerHTML = '✅ Denúncia enviada com sucesso! Obrigado por proteger São Fidélis.';
-                    document.getElementById('valorDenuncia').value = '';
-                    document.getElementById('descricao').value = '';
-                })
-                .catch(err => {
-                    resDiv.style.display = 'block';
-                    resDiv.className = 'alerta';
-                    resDiv.innerHTML = '⚠️ Erro ao enviar. Verifique a configuração do Firebase.';
-                    console.error(err);
-                });
-        } else {
-            // Modo offline: salva no localStorage como fallback
-            const salvas = JSON.parse(localStorage.getItem('denuncias') || '[]');
-            salvas.push(denuncia);
-            localStorage.setItem('denuncias', JSON.stringify(salvas));
-            resDiv.style.display = 'block';
-            resDiv.className = 'sucesso';
-            resDiv.innerHTML = '✅ Denúncia salva localmente! (Firebase não conectado)';
-        }
-    }
-
-    // ── CONTADOR ──
-    function carregarContador() {
-        if (!bancoDeDados) return;
-        bancoDeDados.ref('denuncias').once('value', snapshot => {
-            const total = snapshot.numChildren();
-            if (total > 0) {
-                document.getElementById('rodape').innerHTML +=
-                    `<br>📊 <strong>${total}</strong> denúncia${total !== 1 ? 's' : ''} registrada${total !== 1 ? 's' : ''}`;
-            }
-        });
-    }
+/* ---------- atalhos dentro da Consulta ---------- */
+$$("[data-goto]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var t=document.getElementById(b.getAttribute("data-goto"));
+    if(t)t.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  });
+});
+})();
 </script>
-
 </body>
 </html>
